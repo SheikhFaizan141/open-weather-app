@@ -8,7 +8,7 @@ p {
     margin: 0;
 }
 
-.fa {
+/* .fa {
     font-size: 1rem;
     color: rgb(255, 174, 0);
     background-color: #fff;
@@ -18,6 +18,13 @@ p {
     vertical-align: middle;
 }
 
+.fa-sun {
+    color: goldenrod;
+}
+
+.fa-sun {
+    color: goldenrod;
+} */
 
 /* input {
     padding: 0.5rem 0;
@@ -29,7 +36,7 @@ button {
 }
 
 .container {
-    width: calc(100% - 10vw);
+    /* width: calc(100% - 10vw); */
     margin: 0 auto;
 }
 
@@ -44,6 +51,7 @@ img {
     padding: 0 0.5rem;
     /* background-color: rosybrown; */
     padding: 0.5rem;
+    border: 1px solid red;
 }
 
 .user-profile {
@@ -171,4 +179,47 @@ img {
 
 .progress {
     height: 1rem;
+}
+
+/* Weather Forecast */
+#weather-forecast {
+    margin-top: 2rem;
+    /* background-color: rebeccapurple; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+
+.forecast-box {
+    /* padding: 1rem; */
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+    background-color: rgb(94, 255, 115);
+    /* border: 1px solid black; */
+    box-shadow: 3px 6px 8px black;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.forecast-box i {
+    /* padding: 2rem; */
+    font-size: 2.75rem;
+    background-color: transparent;
+}
+
+.icon {
+    color: rgb(95, 95, 95);
+    font-size: 2.45rem;
+}
+
+.desc {
+    padding: 0.25rem 0.15rem;
+    /* background-color: rgb(255, 255, 255); */
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: rgb(26, 26, 26);
 }

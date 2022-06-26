@@ -1,7 +1,7 @@
 import React from 'react'
 
 const AirQulityIndex = (props) => {
-    console.log(props.main)
+    // console.log(props.main)
     return (
         <div className='air-quality'>
             <div>

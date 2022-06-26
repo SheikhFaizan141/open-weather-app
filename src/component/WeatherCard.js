@@ -1,7 +1,7 @@
 import React from 'react'
 
 const WeatherCard = (props) => {
-    console.log(props.main)
+    // console.log(props.main)
     return (
         <div className='weather-card' >
             <div className='card-heading'>

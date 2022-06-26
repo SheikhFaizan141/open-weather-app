@@ -24,7 +24,8 @@ class App extends React.Component {
       pollution: null,
       oneCall: '',
       lat: '',
-      log: ''
+      log: '',
+      loaded: false
     }
   }
 
@@ -43,12 +44,11 @@ class App extends React.Component {
         const allData = Promise.all([weather, pollution, oneCall]);
         allData.then(res => {
           const [weather, pollution, oneCall] = res;
-          // console.log([pollution['list'][0]['components']])
-          console.log(oneCall)
           this.setState({
             weather: weather,
             pollution: pollution,
-            oneCall: oneCall
+            oneCall: oneCall,
+            loaded: true
           })
         })
       });
@@ -58,6 +58,10 @@ class App extends React.Component {
   }
 
   render() {
+    if (!this.state.loaded) {
+     return <h1>Loading</h1> 
+    }
+
     return (
       <div className='container'>
         <Header
@@ -93,7 +97,7 @@ class App extends React.Component {
               />
             </WeatherCard>
           </div>}
-          <WeatherForecast />
+          <WeatherForecast data={this.state.oneCall['daily']} />
       </div>
     );
   }
