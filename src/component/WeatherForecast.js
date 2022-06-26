@@ -22,7 +22,7 @@ const WeatherForecast = (props) => {
             <div key={forecast['dt']} id='weather-forecast'>
                 <div className='forecast-box'>
                     <div className='icon'>{forecastIcon[forecast['weather'][0]['main']]}</div>
-                    <div className='desc'>{forecast['weather'][0]['description']}</div>
+                    <div className='desc'>{forecast['weather'][0]['description'].slice(0, 1).toUpperCase() + forecast['weather'][0]['description'].slice(1)}</div>
                     <p>🌞{Math.floor(forecast.temp.day - 273.15)}° 🌙{Math.floor(forecast.temp.night - 273)}°</p>
                     <h4>{weekday[day]}</h4>
                 </div>
