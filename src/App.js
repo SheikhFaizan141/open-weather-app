@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
-import AirQulityIndex from './component/AirQulityIndex';
 import Header from './component/Header'
 import WeatherCard from './component/WeatherCard'
 import WeatherForecast from './component/WeatherForecast';
-import WeatherIndicator from './component/WeatherIndicator';
+
 
 const apiKey = "d5cf16c9a343a988a0ba9ec47620dc88";
 
@@ -25,8 +24,12 @@ class App extends React.Component {
       oneCall: '',
       lat: '',
       log: '',
-      loaded: false
+      loaded: false,
+      unit: 'c'
     }
+
+    this.handleFormat = this.handleFormat.bind(this);
+    this.formatKalvin = this.formatKalvin.bind(this);
   }
 
   componentDidMount() {
@@ -36,69 +39,77 @@ class App extends React.Component {
         const lon = position.coords.longitude;
         const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
           .then(res => res.json())
-        const pollution = fetch(`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
-          .then(res => res.json())
         const oneCall = fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
-        .then(res => res.json())
+          .then(res => res.json())
 
-        const allData = Promise.all([weather, pollution, oneCall]);
+        const allData = Promise.all([weather, oneCall]);
         allData.then(res => {
-          const [weather, pollution, oneCall] = res;
+          const [weather, oneCall] = res;
           this.setState({
             weather: weather,
-            pollution: pollution,
             oneCall: oneCall,
             loaded: true
           })
         })
       });
+
     } else {
       console.log("Not Available");
     }
   }
 
+
+  handleFormat(e) {
+    if (e.target.id === 'fahrenheit') {
+      this.setState({ unit: 'f' })
+    } else {
+      this.setState({ unit: 'c' })
+    }
+  }
+
+  formatKalvin(kelvin) {
+    if (this.state.unit === 'c') {
+
+      return Math.round(kelvin - 273.15) + '°';
+    } else {
+
+      return Math.round(1.8 * (kelvin - 273.15) + 32) + '°';
+    }
+  }
+
   render() {
     if (!this.state.loaded) {
-     return <h1>Loading</h1> 
+      return <h1>Loading</h1>
     }
 
     return (
-      <div className='container'>
-        <Header
-        />
-        {this.state.weather &&
+      <>
+        <div className='container'>
+          <Header
+            name={this.state.weather['name']}
+            dataTime={this.state.weather['dt']}
+            unit={this.state.unit}
+            onClick={this.handleFormat}
+          />
           <div id='weather-info'>
             <WeatherCard
-              icon='fa-cloud-sun'
-              cardName='Weather'
-              dis="What's the weather."
-              main={`${Math.floor(this.state.weather['main']['temp'] - 273.15)}°C`}
-              mainFel={`${Math.floor(this.state.weather['main']['feels_like'] - 273.15)}°C`}
-              cardDis={this.state.weather['weather'][0]['description']}
-            >
-              <WeatherIndicator
-                visibility={this.state.weather['visibility']}
-                pressure={this.state.weather['main']['pressure']}
-                humidity={this.state.weather['main']['humidity']}
-              />
+              temp={this.formatKalvin(this.state.weather['main']['temp'])}
+              feel={this.formatKalvin(this.state.weather['main']['feels_like'])}
+              description={this.state.weather['weather'][0]['description']}
 
-            </WeatherCard>
+              visibility={this.state.weather['visibility']}
+              pressure={this.state.weather['main']['pressure']}
+              humidity={this.state.weather['main']['humidity']}
+            />
 
-            <WeatherCard
-              icon='fa-wind'
-              cardName='Air Quality'
-              dis='Main pollutan : PM 2.5'
-              main={this.state.pollution['list'][0]['components']['pm2_5']}
-              mainFel="AQI"
-              cardDis={`Air Quality is ${airQuality[this.state.pollution['list'][0]['main']['aqi']]}`}
-            >
-              <AirQulityIndex
-                main={this.state.pollution['list'][0]['components']}
-              />
-            </WeatherCard>
-          </div>}
-          <WeatherForecast data={this.state.oneCall['daily']} />
-      </div>
+          </div>
+          <WeatherForecast
+            data={this.state.oneCall['daily']}
+            unit={this.state.unit}
+          />
+        </div>
+      </>
+
     );
   }
 }

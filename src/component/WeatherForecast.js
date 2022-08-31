@@ -12,26 +12,41 @@ const WeatherForecast = (props) => {
         'Mist': '🌫'
     }
 
-    console.log(props.data)
+    function formatKalvin(kelvin) {
+        if (props.unit === 'c') {
+    
+          return Math.round(kelvin - 273.15) + '°';
+        } else {
+    
+          return Math.round(1.8 * (kelvin - 273.15) + 32) + '°';
+        }
+      }
 
     const forecastArr = props.data.map(forecast => {
         const day = new Date(parseInt(forecast.dt) * 1000).getDay()
 
-        console.log(forecast['weather'][0]['main'])
+        console.log(forecast['temp'][['max']])
+
         return (
-            <div key={forecast['dt']} id='weather-forecast'>
-                <div className='forecast-box'>
-                    <div className='icon'>{forecastIcon[forecast['weather'][0]['main']]}</div>
-                    <div className='desc'>{forecast['weather'][0]['description'].slice(0, 1).toUpperCase() + forecast['weather'][0]['description'].slice(1)}</div>
-                    <p>🌞{Math.floor(forecast.temp.day - 273.15)}° 🌙{Math.floor(forecast.temp.night - 273)}°</p>
-                    <h4>{weekday[day]}</h4>
+
+            <div
+                className='wf-box'
+                key={forecast['dt']} id='weather-forecast'
+            >
+                <h5>{weekday[day]}</h5>
+                <span>
+                    <i className='wf-box-icon fa fa-sun'></i>
+                </span>
+                <div className="wf-temp-box">
+                    <span className="wf-max-temp">{formatKalvin(forecast['temp'][['max']])}</span>
+                    <span className="wf-min-temp">{formatKalvin(forecast['temp'][['min']])}</span>
                 </div>
             </div>
         )
     });
-    // console.log(typeof forecastArr)
+
     return (
-        <div id='weather-forecast'>
+        <div className='wf-container'>
             {forecastArr}
         </div>
     )
