@@ -100,6 +100,9 @@ class App extends React.Component {
               visibility={this.state.weather['visibility']}
               pressure={this.state.weather['main']['pressure']}
               humidity={this.state.weather['main']['humidity']}
+
+              sunrise={this.state.weather['sys']['sunrise']}
+              sunset={this.state.weather['sys']['sunset']}
             />
 
           </div>
@@ -109,8 +112,7 @@ class App extends React.Component {
           />
         </div>
       </>
-
-    );
+    )
   }
 }
 

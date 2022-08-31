@@ -25,7 +25,7 @@ const WeatherForecast = (props) => {
     const forecastArr = props.data.map(forecast => {
         const day = new Date(parseInt(forecast.dt) * 1000).getDay()
 
-        console.log(forecast['temp'][['max']])
+        // console.log(forecast['temp'][['max']])
 
         return (
 
