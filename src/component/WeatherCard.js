@@ -15,9 +15,9 @@ const WeatherCard = (props) => {
         return strTime;
     }
 
-    console.log(props.sunrise)
+    // console.log(props.sunrise)
     return (
-        <div className='cw-container' >
+        <div className='cw-container rounded-2' >
             <div>
                 <div className='cw-heading'>
                     <h4>Weather</h4>

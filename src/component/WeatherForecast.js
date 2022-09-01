@@ -46,7 +46,7 @@ const WeatherForecast = (props) => {
     });
 
     return (
-        <div className='wf-container'>
+        <div className='wf-container rounded-2'>
             {forecastArr}
         </div>
     )

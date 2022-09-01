@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import AirQuality from './component/AirQuality';
 import Header from './component/Header'
 import WeatherCard from './component/WeatherCard'
 import WeatherForecast from './component/WeatherForecast';
@@ -23,7 +24,7 @@ class App extends React.Component {
       pollution: null,
       oneCall: '',
       lat: '',
-      log: '',
+      lon: '',
       loaded: false,
       unit: 'c'
     }
@@ -37,6 +38,12 @@ class App extends React.Component {
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
+
+        this.setState({
+          lat: lat,
+          lon: lon
+        })
+
         const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
           .then(res => res.json())
         const oneCall = fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
@@ -50,11 +57,12 @@ class App extends React.Component {
             oneCall: oneCall,
             loaded: true
           })
+          console.log(oneCall)
         })
       });
 
     } else {
-      console.log("Not Available");
+      console.lon("Not Available");
     }
   }
 
@@ -84,6 +92,7 @@ class App extends React.Component {
 
     return (
       <>
+      { this.state.loaded &&
         <div className='container'>
           <Header
             name={this.state.weather['name']}
@@ -104,13 +113,19 @@ class App extends React.Component {
               sunrise={this.state.weather['sys']['sunrise']}
               sunset={this.state.weather['sys']['sunset']}
             />
-
           </div>
           <WeatherForecast
             data={this.state.oneCall['daily']}
             unit={this.state.unit}
           />
+          <AirQuality
+            locName={this.state.weather['name']}
+            lat={this.state.lat}
+            lon={this.state.lon}
+            
+          />
         </div>
+      }
       </>
     )
   }
