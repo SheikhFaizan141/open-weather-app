@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react'
 
+const range = {
+    1: 'Good',
+    2: 'Fair',
+    3: 'Moderate',
+    4: 'Poor',
+    5: 'Very Poor'
+  }
 
 function AirQuality({ locName, lat, lon }) {
     const [airQuality, setAirQuality] = useState(null)
 
     useEffect(() => {
-        fetch(`http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=${lat}&lon=${lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+        fetch(`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
             .then(res => res.json())
             .then(data => setAirQuality(data))
     }, [lat, lon])
@@ -13,7 +20,7 @@ function AirQuality({ locName, lat, lon }) {
     console.log(airQuality)
     return (
         <> { 
-            airQuality && 
+            // airQuality && 
             <div className='rounded-2 aq-container'>
                 <h2 className='aq-header'>Air Quality Index</h2>
                 <p className='aq-time-location'><span>{locName}</span> Published at PM 3:30</p>

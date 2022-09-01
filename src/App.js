@@ -8,13 +8,7 @@ import WeatherForecast from './component/WeatherForecast';
 
 const apiKey = "d5cf16c9a343a988a0ba9ec47620dc88";
 
-const airQuality = {
-  1: 'Good',
-  2: 'Fair',
-  3: 'Moderate',
-  4: 'Poor',
-  5: 'Very Poor'
-}
+
 
 class App extends React.Component {
   constructor(props) {
@@ -44,9 +38,9 @@ class App extends React.Component {
           lon: lon
         })
 
-        const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+        const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.lat}&lon=${this.state.lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
           .then(res => res.json())
-        const oneCall = fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+        const oneCall = fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
           .then(res => res.json())
 
         const allData = Promise.all([weather, oneCall]);
@@ -57,7 +51,8 @@ class App extends React.Component {
             oneCall: oneCall,
             loaded: true
           })
-          console.log(oneCall)
+          // console.log(weather['weather'][0]['icon'])
+          // console.log(oneCall)
         })
       });
 
@@ -92,40 +87,44 @@ class App extends React.Component {
 
     return (
       <>
-      { this.state.loaded &&
-        <div className='container'>
-          <Header
-            name={this.state.weather['name']}
-            dataTime={this.state.weather['dt']}
-            unit={this.state.unit}
-            onClick={this.handleFormat}
-          />
-          <div id='weather-info'>
-            <WeatherCard
-              temp={this.formatKalvin(this.state.weather['main']['temp'])}
-              feel={this.formatKalvin(this.state.weather['main']['feels_like'])}
-              description={this.state.weather['weather'][0]['description']}
+        {
+          this.state.loaded &&
+          <div className='container'>
+            <Header
+              name={this.state.weather['name']}
+              dataTime={this.state.weather['dt']}
+              unit={this.state.unit}
+              onClick={this.handleFormat}
+            />
+            <div id='weather-info'>
+              <WeatherCard
+                temp={this.formatKalvin(this.state.weather['main']['temp'])}
+                feel={this.formatKalvin(this.state.weather['main']['feels_like'])}
+                description={this.state.weather['weather'][0]['description']}
+                icon={this.state.weather['weather'][0]['icon']}
 
-              visibility={this.state.weather['visibility']}
-              pressure={this.state.weather['main']['pressure']}
-              humidity={this.state.weather['main']['humidity']}
+                visibility={this.state.weather['visibility']}
+                pressure={this.state.weather['main']['pressure']}
+                humidity={this.state.weather['main']['humidity']}
 
-              sunrise={this.state.weather['sys']['sunrise']}
-              sunset={this.state.weather['sys']['sunset']}
+                sunrise={this.state.weather['sys']['sunrise']}
+                sunset={this.state.weather['sys']['sunset']}
+
+
+              />
+            </div>
+            <WeatherForecast
+              data={this.state.oneCall['daily']}
+              unit={this.state.unit}
+            />
+            <AirQuality
+              locName={this.state.weather['name']}
+              lat={this.state.lat}
+              lon={this.state.lon}
+
             />
           </div>
-          <WeatherForecast
-            data={this.state.oneCall['daily']}
-            unit={this.state.unit}
-          />
-          <AirQuality
-            locName={this.state.weather['name']}
-            lat={this.state.lat}
-            lon={this.state.lon}
-            
-          />
-        </div>
-      }
+        }
       </>
     )
   }

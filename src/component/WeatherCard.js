@@ -26,8 +26,7 @@ const WeatherCard = (props) => {
 
 
                 <div className='cw-info'>
-                    <i className='cw-icon fa fa-cloud-sun'></i>
-
+                <img src={`http://openweathermap.org/img/wn/${props.icon}@2x.png`} width="100px" height="100px" alt="icon"></img>
                     <div>
                         <p className='cw-desc'>{props.description}</p>
                         <div className='cw-temp'>
