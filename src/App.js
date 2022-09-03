@@ -17,14 +17,15 @@ class App extends React.Component {
       weather: null,
       pollution: null,
       oneCall: '',
-      lat: '',
-      lon: '',
+      lat: '28.7041',
+      lon: '77.1025',
       loaded: false,
       unit: 'c'
     }
 
     this.handleFormat = this.handleFormat.bind(this);
     this.formatKalvin = this.formatKalvin.bind(this);
+    this.handleCoordinates = this.handleCoordinates.bind(this);
   }
 
   componentDidMount() {
@@ -51,13 +52,33 @@ class App extends React.Component {
             oneCall: oneCall,
             loaded: true
           })
-          // console.log(weather['weather'][0]['icon'])
-          // console.log(oneCall)
         })
       });
 
     } else {
       console.lon("Not Available");
+    }
+  }
+
+
+  // componentDidUpdate() {
+  //   console.log('ff')
+  // }
+
+  handleCoordinates(e) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(navigator)
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        this.setState({
+          lat: lat,
+          lon: lon
+        })        
+      })
+    } else {
+      console.log('Error ')
     }
   }
 
@@ -82,21 +103,25 @@ class App extends React.Component {
 
   render() {
     if (!this.state.loaded) {
-      return <h1>Loading</h1>
-    }
+      return (
+        <div id='header'>
+          sb
+        </div>
+      )
+    } else {
+      return (
+        <>
+          {
+            this.state.loaded &&
+            <div className='container'>
 
-    return (
-      <>
-        {
-          this.state.loaded &&
-          <div className='container'>
-            <Header
-              name={this.state.weather['name']}
-              dataTime={this.state.weather['dt']}
-              unit={this.state.unit}
-              onClick={this.handleFormat}
-            />
-            <div id='weather-info'>
+              <Header
+                name={this.state.weather['name']}
+                dataTime={this.state.weather['dt']}
+                unit={this.state.unit}
+                onClick={this.handleFormat}
+                locationClick={this.handleCoordinates}
+              />
               <WeatherCard
                 temp={this.formatKalvin(this.state.weather['main']['temp'])}
                 feel={this.formatKalvin(this.state.weather['main']['feels_like'])}
@@ -112,21 +137,21 @@ class App extends React.Component {
 
 
               />
-            </div>
-            <WeatherForecast
-              data={this.state.oneCall['daily']}
-              unit={this.state.unit}
-            />
-            <AirQuality
-              locName={this.state.weather['name']}
-              lat={this.state.lat}
-              lon={this.state.lon}
+              <WeatherForecast
+                data={this.state.oneCall['daily']}
+                unit={this.state.unit}
+              />
+              <AirQuality
+                locName={this.state.weather['name']}
+                lat={this.state.lat}
+                lon={this.state.lon}
 
-            />
-          </div>
-        }
-      </>
-    )
+              />
+            </div>
+          }
+        </>
+      )
+    }
   }
 }
 

@@ -18,14 +18,18 @@ p {
 }
 
 
+body {
+    background-color: #363636;
+}
+
 
 .container {
-    background-color: #242424;
+    background-color: #0d5fac;
     padding: 1rem;
     width: 100%;
     max-width: 720px;
 
-    margin-bottom: 2rem;
+    margin: 1rem auto;
 
 }
 
@@ -35,36 +39,51 @@ p {
     justify-content: space-between;
     align-items: center;
     padding: 0 0.5rem;
-    background-color: rgb(22, 179, 241);
+    background-color: rgb(255, 255, 255);
 
     border-radius: 4px;
     padding: 0.5rem;
     /* margin-top: .5rem; */
 }
 
-.user-profile {
+.search {
     display: flex;
-    column-gap: 0.5rem;
+    align-items: center;
+    column-gap: .5rem;
 }
 
-.user-profile span {
-    font-size: 1.35rem;
-}
+/* .sb-search form {
+    background-color: royalblue;
+} */
 
-.user-profile h3 {
-    margin: 0;
-    font-size: 1.45rem;
-}
-
-.user-profile img {
-    width: 80px;
-    height: auto;
-    border-radius: 50%;
-    background-color: rgb(255, 255, 255);
+.sb-location {
+    font-size: 1.25rem;
 }
 
 
+.sb-search button,input {
+    border: none;
+    padding: 0.25rem .5rem;
+}
 
+.sb-search input {
+    /* border: none; */
+    background-color: rgb(209, 209, 209);
+    border-radius: 4px 0 0 4px;
+}
+
+.sb-search input::placeholder {
+    font-size: 1.05rem;
+    font-weight: 500;
+    /* border-radius: 4px 0 0 4px; */
+}
+
+.sb-search button {
+    /* border: none; */
+    background-color: rgb(63, 63, 63);
+    color: #fff;
+    border-radius: 0 4px 4px 0;
+}
 
 .time {
     font-size: 1.15rem;
@@ -87,14 +106,15 @@ p {
 } */
 
 .temp-unit-text {
-    color: #242424;
-    font-size: 1.15rem;
+    color: #8a8a8a;
+    font-size: 1.05rem;
     cursor: pointer;
-    line-height: 1.6;
+    /* line-height: 1.6; */
+    font-weight: 500;
 }
 
 .temp-unit-text.active {
-    color: #ffffff;
+    color: #444444;
     cursor: auto;
 }
 
@@ -178,7 +198,7 @@ p {
 .wf-container {
     margin-top: 1rem;
     background-color: #fff;
-    border: 1px solid gray;
+    /* border: 1px solid gray; */
 
     display: flex;
     /* flex-wrap: wrap; */
