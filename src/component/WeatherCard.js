@@ -2,7 +2,7 @@ import React from 'react'
 import formatTime from '../global/formatTime';
 
 
-const WeatherCard = (props) => {
+const WeatherCard = ({ temp, realFeel, icon, desc, sunrise, sunset, humidity, windSpeed, pressure, uvi, unit }) => {
     // console.log(props.current)
     return (
         <div className='cw-container rounded-2' >
@@ -15,19 +15,19 @@ const WeatherCard = (props) => {
 
                 <div className='cw-info'>
                     <img
-                        src={`http://openweathermap.org/img/wn/${props.current['weather'][0]['icon']}@2x.png`} width="100px" height="100px" alt="icon"
+                        src={`http://openweathermap.org/img/wn/${icon}@2x.png`} width="100px" height="100px" alt="icon"
                     >
                     </img>
                     <div>
                         <p className='cw-desc'>
-                            {props.current['weather'][0]['description']}
+                            {desc}
                         </p>
                         <div className='cw-temp'>
                             <span>
-                                {formatTime.formatKalvin(props.unit, props.current['temp'])}
+                                {formatTime.formatKalvin(unit, temp)}
                             </span>
                             <span className='cw-feels-like'>
-                                {formatTime.formatKalvin(props.unit, props.current['feels_like'])}
+                                {formatTime.formatKalvin(unit, realFeel)}
                             </span>
                         </div>
                     </div>
@@ -39,36 +39,30 @@ const WeatherCard = (props) => {
 
                 <div className='sun-info'>
                     <h5>Sunrise </h5>
-                    <span className='sun-text sun-rise'>{formatTime.formatAMPM(new Date(props.current['sunrise'] * 1000))}</span>
+                    <span className='sun-text sun-rise'>{formatTime.formatAMPM(new Date(sunrise * 1000))}</span>
                     <h5>Sunset </h5>
-                    <span className='sun-text sun-set'>{formatTime.formatAMPM(new Date(props.current['sunset'] * 1000))}</span>
+                    <span className='sun-text sun-set'>{formatTime.formatAMPM(new Date(sunset * 1000))}</span>
                 </div>
 
                 <div className="cw-add-container">
                     <div className='cw-add-box'>
                         <div>
                             <span className='cw-add-box-heading'>Humadity </span>
-                            <span className='cw-add-box-value'>{props.current['humidity']}%</span>
+                            <span className='cw-add-box-value'>{humidity}%</span>
                         </div>
                         <div>
                             <span className='cw-add-box-heading'>Wind speed </span>
-                            <span className='cw-add-box-value'>{props.current['wind_speed']}km/h</span>
+                            <span className='cw-add-box-value'>{windSpeed}km/h</span>
                         </div>
                     </div>
                     <div className='cw-add-box'>
                         <div>
                             <span className='cw-add-box-heading'>Pressure </span>
-                            <span className='cw-add-box-value'>{props.current['pressure']}hPa</span>
+                            <span className='cw-add-box-value'>{pressure}hPa</span>
                         </div>
                         <div>
                             <span className='cw-add-box-heading'>UV index</span>
-                            <span className='cw-add-box-value'>{props.current['uvi']}</span>
-                        </div>
-                    </div>
-                    <div className='cw-add-box'>
-                        <div>
-                            <span className='cw-add-box-heading'>Visibility </span>
-                            <span className='cw-add-box-value'>{Math.floor(props.current['visibility'] / 1000)}km</span>
+                            <span className='cw-add-box-value'>{uvi}</span>
                         </div>
                     </div>
                 </div>

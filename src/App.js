@@ -14,6 +14,8 @@ class App extends React.Component {
       temp: '',
       realFeel: '',
       desc: '',
+      sunrise: '',
+      sunset: '',
       humadity: '',
       windSpeed: '',
       pressure: '',
@@ -62,6 +64,18 @@ class App extends React.Component {
           weather: weather,
           oneCall: oneCall,
           currentWeather: oneCall['current'],
+
+          temp: oneCall['current']['temp'],
+          realFeel: oneCall['current']['feels_like'],
+          icon: oneCall['current']['weather'][0]['icon'],
+          desc: oneCall['current']['weather'][0]['description'],
+          sunrise: oneCall['current']['sunrise'],
+          sunset: oneCall['current']['sunset'],
+          humidity: oneCall['current']['humidity'],
+          windSpeed: oneCall['current']['wind_speed'],
+          pressure: oneCall['current']['pressure'],
+          uvi: oneCall['current']['uvi'],
+
           loaded: true
         })
         console.log(this.state.oneCall)
@@ -73,7 +87,6 @@ class App extends React.Component {
   handleCoordinates(e) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log('loda')
         this.setState({
           lat: position.coords.latitude,
           lon: position.coords.longitude
@@ -106,7 +119,16 @@ class App extends React.Component {
     console.log(e)
     console.log(forecast)
     this.setState({
-      currentWeather: forecast
+      temp: forecast['temp']['day'],
+      realFeel: forecast['feels_like']['day'],
+      icon: forecast['weather'][0]['icon'],
+      desc: forecast['weather'][0]['description'],
+      sunrise: forecast['sunrise'],
+      sunset: forecast['sunset'],
+      humidity: forecast['humidity'],
+      windSpeed: forecast['wind_speed'],
+      pressure: forecast['pressure'],
+      uvi: forecast['uvi'],
     })
   }
 
@@ -132,7 +154,16 @@ class App extends React.Component {
                 locationClick={this.handleCoordinates}
               />
               <WeatherCard
-                current={this.state.currentWeather}
+                temp={this.state.temp}
+                realFeel={this.state.realFeel}
+                icon={this.state.icon}
+                desc={this.state.desc}
+                sunrise={this.state.sunrise}
+                sunset={this.state.sunset}
+                humidity={this.state.humidity}
+                windSpeed={this.state.windSpeed}
+                pressure={this.state.pressure}
+                uvi={this.state.uvi}
                 unit={this.state.unit}
               />
               <WeatherForecast
