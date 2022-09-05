@@ -5,17 +5,22 @@ import Header from './component/Header'
 import WeatherCard from './component/WeatherCard'
 import WeatherForecast from './component/WeatherForecast';
 
-
-const apiKey = "d5cf16c9a343a988a0ba9ec47620dc88";
-
-
+// const apiKey = "d5cf16c9a343a988a0ba9ec47620dc88";
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      temp: '',
+      realFeel: '',
+      desc: '',
+      humadity: '',
+      windSpeed: '',
+      pressure: '',
+      uvi: '',
       weather: null,
       pollution: null,
+      currentWeather: null,
       oneCall: '',
       lat: '28.7041',
       lon: '77.1025',
@@ -26,62 +31,58 @@ class App extends React.Component {
     this.handleFormat = this.handleFormat.bind(this);
     this.formatKalvin = this.formatKalvin.bind(this);
     this.handleCoordinates = this.handleCoordinates.bind(this);
+    this.fetchWeather = this.fetchWeather.bind(this);
+    this.handleWeather = this.handleWeather.bind(this);
   }
 
+
   componentDidMount() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
+    this.fetchWeather()
+  }
 
-        this.setState({
-          lat: lat,
-          lon: lon
-        })
 
-        const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.lat}&lon=${this.state.lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
-          .then(res => res.json())
-        const oneCall = fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
-          .then(res => res.json())
-
-        const allData = Promise.all([weather, oneCall]);
-        allData.then(res => {
-          const [weather, oneCall] = res;
-          this.setState({
-            weather: weather,
-            oneCall: oneCall,
-            loaded: true
-          })
-        })
-      });
-
-    } else {
-      console.lon("Not Available");
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.lat !== this.state.lat || prevState.lon !== this.state.lon) {
+      this.fetchWeather()
     }
   }
 
 
-  // componentDidUpdate() {
-  //   console.log('ff')
-  // }
+  fetchWeather() {
+    const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.lat}&lon=${this.state.lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+      .then(res => res.json())
+
+    const oneCall = fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+      .then(res => res.json())
+
+    Promise.all([weather, oneCall])
+      .then(res => {
+        const [weather, oneCall] = res;
+        this.setState({
+          weather: weather,
+          oneCall: oneCall,
+          currentWeather: oneCall['current'],
+          loaded: true
+        })
+        console.log(this.state.oneCall)
+      })
+
+
+  }
 
   handleCoordinates(e) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log(navigator)
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-
+        console.log('loda')
         this.setState({
-          lat: lat,
-          lon: lon
-        })        
+          lat: position.coords.latitude,
+          lon: position.coords.longitude
+        })
       })
     } else {
       console.log('Error ')
     }
   }
-
 
   handleFormat(e) {
     if (e.target.id === 'fahrenheit') {
@@ -101,6 +102,14 @@ class App extends React.Component {
     }
   }
 
+  handleWeather(e, forecast) {
+    console.log(e)
+    console.log(forecast)
+    this.setState({
+      currentWeather: forecast
+    })
+  }
+
   render() {
     if (!this.state.loaded) {
       return (
@@ -113,7 +122,7 @@ class App extends React.Component {
         <>
           {
             this.state.loaded &&
-            <div className='container'>
+            <div className='app-container'>
 
               <Header
                 name={this.state.weather['name']}
@@ -123,29 +132,18 @@ class App extends React.Component {
                 locationClick={this.handleCoordinates}
               />
               <WeatherCard
-                temp={this.formatKalvin(this.state.weather['main']['temp'])}
-                feel={this.formatKalvin(this.state.weather['main']['feels_like'])}
-                description={this.state.weather['weather'][0]['description']}
-                icon={this.state.weather['weather'][0]['icon']}
-
-                visibility={this.state.weather['visibility']}
-                pressure={this.state.weather['main']['pressure']}
-                humidity={this.state.weather['main']['humidity']}
-
-                sunrise={this.state.weather['sys']['sunrise']}
-                sunset={this.state.weather['sys']['sunset']}
-
-
+                current={this.state.currentWeather}
+                unit={this.state.unit}
               />
               <WeatherForecast
                 data={this.state.oneCall['daily']}
                 unit={this.state.unit}
+                onClick={this.handleWeather}
               />
               <AirQuality
                 locName={this.state.weather['name']}
                 lat={this.state.lat}
                 lon={this.state.lon}
-
               />
             </div>
           }

@@ -9,6 +9,17 @@ class formatTime {
         let strTime = hours + ':' + minutes + ' ' + ampm;
         return strTime;
     }
+
+ 
+     static  formatKalvin(unit, kelvin) {
+        if (unit === 'c') {
+    
+          return Math.round(kelvin - 273.15) + '°';
+        } else {
+    
+          return Math.round(1.8 * (kelvin - 273.15) + 32) + '°';
+        }
+      }
 }
 
 export default formatTime;

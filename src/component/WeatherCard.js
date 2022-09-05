@@ -1,21 +1,9 @@
 import React from 'react'
-
+import formatTime from '../global/formatTime';
 
 
 const WeatherCard = (props) => {
-
-    function formatAMPM(date) {
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        let strTime = hours + ':' + minutes + ' ' + ampm;
-        return strTime;
-    }
-
-    // console.log(props.sunrise)
+    // console.log(props.current)
     return (
         <div className='cw-container rounded-2' >
             <div>
@@ -26,12 +14,21 @@ const WeatherCard = (props) => {
 
 
                 <div className='cw-info'>
-                <img src={`http://openweathermap.org/img/wn/${props.icon}@2x.png`} width="100px" height="100px" alt="icon"></img>
+                    <img
+                        src={`http://openweathermap.org/img/wn/${props.current['weather'][0]['icon']}@2x.png`} width="100px" height="100px" alt="icon"
+                    >
+                    </img>
                     <div>
-                        <p className='cw-desc'>{props.description}</p>
+                        <p className='cw-desc'>
+                            {props.current['weather'][0]['description']}
+                        </p>
                         <div className='cw-temp'>
-                            <span>{props.temp}</span>
-                            <span className='cw-feels-like'>{props.feel}</span>
+                            <span>
+                                {formatTime.formatKalvin(props.unit, props.current['temp'])}
+                            </span>
+                            <span className='cw-feels-like'>
+                                {formatTime.formatKalvin(props.unit, props.current['feels_like'])}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -40,24 +37,43 @@ const WeatherCard = (props) => {
 
             <div className='cw-addinfo'>
 
-                <div className="cw-addinfo-box">
-                    <p>Humadity: {props.humidity}%</p>
-
-                    <p>Wind: 3km/h</p>
-
-                    <p>Pressure: {props.pressure}hPa</p>
-
-                    <p>Visibility: {Math.floor(props.visibility / 1000)}km</p>
-
-
-                </div>
-
                 <div className='sun-info'>
-                    <h4>Sunrise 🌅</h4>
-                    <span className='sun-text sun-rise'>{formatAMPM(new Date(props.sunrise * 1000))}</span>
-                    <h4>Sunset 🌆</h4>
-                    <span className='sun-text sun-set'>{formatAMPM(new Date(props.sunset * 1000))}</span>
+                    <h5>Sunrise </h5>
+                    <span className='sun-text sun-rise'>{formatTime.formatAMPM(new Date(props.current['sunrise'] * 1000))}</span>
+                    <h5>Sunset </h5>
+                    <span className='sun-text sun-set'>{formatTime.formatAMPM(new Date(props.current['sunset'] * 1000))}</span>
                 </div>
+
+                <div className="cw-add-container">
+                    <div className='cw-add-box'>
+                        <div>
+                            <span className='cw-add-box-heading'>Humadity </span>
+                            <span className='cw-add-box-value'>{props.current['humidity']}%</span>
+                        </div>
+                        <div>
+                            <span className='cw-add-box-heading'>Wind speed </span>
+                            <span className='cw-add-box-value'>{props.current['wind_speed']}km/h</span>
+                        </div>
+                    </div>
+                    <div className='cw-add-box'>
+                        <div>
+                            <span className='cw-add-box-heading'>Pressure </span>
+                            <span className='cw-add-box-value'>{props.current['pressure']}hPa</span>
+                        </div>
+                        <div>
+                            <span className='cw-add-box-heading'>UV index</span>
+                            <span className='cw-add-box-value'>{props.current['uvi']}</span>
+                        </div>
+                    </div>
+                    <div className='cw-add-box'>
+                        <div>
+                            <span className='cw-add-box-heading'>Visibility </span>
+                            <span className='cw-add-box-value'>{Math.floor(props.current['visibility'] / 1000)}km</span>
+                        </div>
+                    </div>
+                </div>
+
+
 
             </div>
 
