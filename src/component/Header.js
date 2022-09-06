@@ -1,26 +1,68 @@
 import React from 'react'
+import formatTime from '../global/formatTime';
 
-const Header = ({ onClick, unit, name, dataTime, locationClick }) => {
+function TempScale({ unit, onClick }) {
+  return (
+    <div className='temp-unit '>
+      <span
+        id='celsius'
+        className={unit === 'c' ? 'temp-unit-text active' : 'temp-unit-text'}
+        onClick={onClick}
+      >
+        °C
+      </span>
+      <span className="divider"></span>
+      <span
+        id='fahrenheit'
+        className={unit === 'f' ? 'temp-unit-text active' : 'temp-unit-text'}
+        onClick={onClick}
+      >
+        °F
+      </span>
+    </div>
+  )
+}
 
-  function formatAMPM(date) {
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    let strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
 
-  function formatTime(arg) {
+function SearchBar({ onSubmit, onChange, locationClick, value }) {
+  return (
+    <div className='sb-search'>
+      <i className="sb-icon fa fa-search"></i>
+      <form
+        className='sb-form'
+        onSubmit={onSubmit}
+      >
+        <input
+          className='sb-input'
+          type="search"
+          placeholder="Search City"
+          autoComplete="off"
+          name="search"
+          value={value}
+          onChange={onChange}
+        />
+      </form>
+      <button
+        className='sb-btn'
+        onClick={locationClick}
+      >
+        <i className="sb-icon fa-solid fa-location-dot"></i>
+      </button>
+    </div>
+  )
+}
+
+
+const Header = ({ onClick, unit, name, dateTime, locationClick, value, onChange, onSubmit }) => {
+
+  function format(arg) {
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     let dt = new Date(arg * 1000);
     let day = weekday[dt.getDay()];
 
-    const time = formatAMPM(dt);
-
+    // static method
+    const time = formatTime.formatAMPM(dt);
 
     return day + ", " + time;
   }
@@ -28,50 +70,23 @@ const Header = ({ onClick, unit, name, dataTime, locationClick }) => {
 
   return (
     <div id='header'>
-      <div className='user-profile ml-1'>
-        <div className='user-name'>
-          <h1 className='city'>{name}</h1>
-          <p className='time'>{formatTime(dataTime)}</p>
-        </div>
+      <div>
+        <h1 className='city'>{name}</h1>
+        <span className='time'>{format(dateTime)}</span>
       </div>
 
       <div className="search mr-1">
-
-        <div className='sb-search'>
-          <form>
-            <input className='sb-input' type="text" placeholder="Search" name="search" />
-            <button className='sb-input bg-success' type="submit"><i className="fa fa-search"></i></button>
-          </form>
-
-
-        </div>
-   
-        <div className='sb-location-box'>
-          <button 
-          className='btn btn-primary'
+        <SearchBar
+          onSubmit={onSubmit}
+          onChange={onChange}
           onClick={locationClick}
-          >
-          <i className="fa-solid fa-location-dot"></i>
-          </button>
-        </div>
+          value={value}
+        />
 
-        <div className='temp-unit '>
-          <span
-            id='celsius'
-            className={unit === 'c' ? 'temp-unit-text active' : 'temp-unit-text'}
-            onClick={onClick}
-          >
-            °C
-          </span>
-          <span className="divider"></span>
-          <span
-            id='fahrenheit'
-            className={unit === 'f' ? 'temp-unit-text active' : 'temp-unit-text'}
-            onClick={onClick}
-          >
-            °F
-          </span>
-        </div>
+        <TempScale
+        unit={unit} 
+        onClick={onClick}
+        />
 
       </div>
     </div>

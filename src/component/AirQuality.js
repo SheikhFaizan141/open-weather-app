@@ -67,7 +67,7 @@ function AirQuality({ locName, lat, lon }) {
                 <h2 className='aq-header'>Air Quality Index</h2>
                 <p className='aq-time-location'>
                     <span>{locName}</span>
-                    Published at:
+                    Published at
                     <span className='aq-time'> {formatTime.formatAMPM(new Date(airQuality['list'][0]['dt'] * 1000))}</span>
                 </p>
                 <div className='aq-aqi-box'>

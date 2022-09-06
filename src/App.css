@@ -23,7 +23,7 @@ p {
 
 
 body {
-    background-color: #363636;
+    background-color: #707070;
 }
 
 
@@ -47,53 +47,83 @@ body {
 #header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 0.5rem;
-    background-color: rgb(255, 255, 255);
-
+    align-items:baseline;
+    background-color: #c4c4c4;
+    margin-top: .5rem;
+    padding: .5rem 1rem;
     border-radius: 4px;
-    padding: 0.5rem;
-    /* margin-top: .5rem; */
+
 }
 
 .search {
     display: flex;
     align-items: center;
     column-gap: .5rem;
+    margin: auto 0;
 }
 
-/* .sb-search form {
-    background-color: royalblue;
-} */
+.sb-search  {
+    display: flex;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    /* box-shadow: 0 0 10px black; */
+    border-radius: 28px;
+    /* padding: 0.5rem 1rem; */
+    margin: 0;
+    z-index: 10;
+}
 
-.sb-location {
+/* .sb-location {
     font-size: 1.25rem;
-}
-
+} */
 
 .sb-search button,input {
     border: none;
-    padding: 0.25rem .5rem;
+}
+
+.sb-form {
+    padding: 0;
 }
 
 .sb-search input {
-    /* border: none; */
-    background-color: rgb(209, 209, 209);
-    border-radius: 4px 0 0 4px;
+    display: inline-block;
+    font-size: 1.05rem;
+    font-weight: 400;
+    background-color: rgb(255, 255, 255);
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
 }
 
 .sb-search input::placeholder {
     font-size: 1.05rem;
     font-weight: 500;
-    /* border-radius: 4px 0 0 4px; */
 }
 
-.sb-search button {
-    /* border: none; */
-    background-color: rgb(63, 63, 63);
-    color: #fff;
-    border-radius: 0 4px 4px 0;
+.sb-search .sb-btn:active,
+.sb-search .sb-btn:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
+
+.sb-btn {
+    background-color: inherit;
+    padding: 0;
+    margin: 0;
+    border-radius: inherit;
+}
+
+.sb-icon {
+    font-size: 1rem;
+    color: #4f4f4f;
+    padding: 1rem;
+}
+
+/* ###################### */
 
 .time {
     font-size: 1.15rem;
@@ -107,28 +137,25 @@ body {
     border-radius: 4px;
     box-shadow: 0 0 8px black;
 }
-
+*/
 
 .temp-unit {
-    font-size: 1.15rem;
-    color: #4f4f4f;
-
-} */
+    /* background-color: #fff;
+    padding: .25rem .5rem; */
+    border-radius: 4px;
+}
 
 .temp-unit-text {
     color: #8a8a8a;
-    font-size: 1.05rem;
-    cursor: pointer;
-    /* line-height: 1.6; */
+    font-size: 1.25rem;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .temp-unit-text.active {
     color: #444444;
     cursor: auto;
 }
-
-
 
 .divider {
     border-left: solid 1px #000;

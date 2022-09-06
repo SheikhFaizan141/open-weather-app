@@ -5,42 +5,42 @@ import Header from './component/Header'
 import WeatherCard from './component/WeatherCard'
 import WeatherForecast from './component/WeatherForecast';
 
-// const apiKey = "d5cf16c9a343a988a0ba9ec47620dc88";
-
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      place: '',
+      lat: '',
+      lon: '',
+      loaded: false,
+      unit: 'c',
       temp: '',
       realFeel: '',
       desc: '',
       sunrise: '',
       sunset: '',
-      humadity: '',
+      humidity: '',
       windSpeed: '',
       pressure: '',
       uvi: '',
-      weather: null,
+      geoLoc: null,
       pollution: null,
       currentWeather: null,
-      oneCall: '',
-      lat: '28.7041',
-      lon: '77.1025',
-      loaded: false,
-      unit: 'c'
+      oneCall: ''
     }
 
     this.handleFormat = this.handleFormat.bind(this);
-    this.formatKalvin = this.formatKalvin.bind(this);
     this.handleCoordinates = this.handleCoordinates.bind(this);
     this.fetchWeather = this.fetchWeather.bind(this);
     this.handleWeather = this.handleWeather.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
 
-  componentDidMount() {
-    this.fetchWeather()
-  }
+  // componentDidMount() {
+  //   this.fetchWeather()
+  // }
 
 
   componentDidUpdate(prevProps, prevState) {
@@ -51,20 +51,13 @@ class App extends React.Component {
 
 
   fetchWeather() {
-    const weather = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${this.state.lat}&lon=${this.state.lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
       .then(res => res.json())
-
-    const oneCall = fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
-      .then(res => res.json())
-
-    Promise.all([weather, oneCall])
-      .then(res => {
-        const [weather, oneCall] = res;
+      .then(oneCall => {
+        console.log(oneCall)
         this.setState({
-          weather: weather,
           oneCall: oneCall,
           currentWeather: oneCall['current'],
-
           temp: oneCall['current']['temp'],
           realFeel: oneCall['current']['feels_like'],
           icon: oneCall['current']['weather'][0]['icon'],
@@ -78,13 +71,10 @@ class App extends React.Component {
 
           loaded: true
         })
-        console.log(this.state.oneCall)
       })
-
-
   }
 
-  handleCoordinates(e) {
+  handleCoordinates() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.setState({
@@ -105,19 +95,7 @@ class App extends React.Component {
     }
   }
 
-  formatKalvin(kelvin) {
-    if (this.state.unit === 'c') {
-
-      return Math.round(kelvin - 273.15) + '°';
-    } else {
-
-      return Math.round(1.8 * (kelvin - 273.15) + 32) + '°';
-    }
-  }
-
   handleWeather(e, forecast) {
-    console.log(e)
-    console.log(forecast)
     this.setState({
       temp: forecast['temp']['day'],
       realFeel: forecast['feels_like']['day'],
@@ -132,55 +110,82 @@ class App extends React.Component {
     })
   }
 
+  handleChange(e) {
+    this.setState({ place: e.target.value })
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${this.state.place}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+          geoLoc: data,
+          lat: data[0]['lat'],
+          lon: data[0]['lon']
+        })
+      })
+  }
+
   render() {
     if (!this.state.loaded) {
       return (
-        <div id='header'>
-          sb
+        <div className='app-container'>
+          <Header
+            isLoaded={this.state.loaded}
+            unit={this.state.unit}
+            onClick={this.handleFormat}
+            locationClick={this.handleCoordinates}
+            onChange={this.handleChange}
+            onSubmit={this.handleSubmit}
+            value={this.state.place}
+          />
         </div>
       )
-    } else {
-      return (
-        <>
-          {
-            this.state.loaded &&
-            <div className='app-container'>
-
-              <Header
-                name={this.state.weather['name']}
-                dataTime={this.state.weather['dt']}
-                unit={this.state.unit}
-                onClick={this.handleFormat}
-                locationClick={this.handleCoordinates}
-              />
-              <WeatherCard
-                temp={this.state.temp}
-                realFeel={this.state.realFeel}
-                icon={this.state.icon}
-                desc={this.state.desc}
-                sunrise={this.state.sunrise}
-                sunset={this.state.sunset}
-                humidity={this.state.humidity}
-                windSpeed={this.state.windSpeed}
-                pressure={this.state.pressure}
-                uvi={this.state.uvi}
-                unit={this.state.unit}
-              />
-              <WeatherForecast
-                data={this.state.oneCall['daily']}
-                unit={this.state.unit}
-                onClick={this.handleWeather}
-              />
-              <AirQuality
-                locName={this.state.weather['name']}
-                lat={this.state.lat}
-                lon={this.state.lon}
-              />
-            </div>
-          }
-        </>
-      )
     }
+
+    return (
+      <>
+        <div className='app-container'>
+
+          <Header
+            name={this.state.geoLoc[0]['name']}
+            dateTime={this.state.currentWeather['dt']}
+            unit={this.state.unit}
+            onClick={this.handleFormat}
+            locationClick={this.handleCoordinates}
+            onChange={this.handleChange}
+            onSubmit={this.handleSubmit}
+            value={this.state.place}
+          />
+
+          <WeatherCard
+            temp={this.state.temp}
+            realFeel={this.state.realFeel}
+            icon={this.state.icon}
+            desc={this.state.desc}
+            sunrise={this.state.sunrise}
+            sunset={this.state.sunset}
+            humidity={this.state.humidity}
+            windSpeed={this.state.windSpeed}
+            pressure={this.state.pressure}
+            uvi={this.state.uvi}
+            unit={this.state.unit}
+          />
+          <WeatherForecast
+            data={this.state.oneCall['daily']}
+            unit={this.state.unit}
+            onClick={this.handleWeather}
+          />
+          <AirQuality
+            lat={this.state.lat}
+            lon={this.state.lon}
+          />
+        </div>
+      </>
+    )
   }
 }
 
