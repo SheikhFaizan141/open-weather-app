@@ -3,8 +3,6 @@ import formatTime from '../global/formatTime';
 
 
 const WeatherCard = ({ temp, realFeel, icon, desc, sunrise, sunset, humidity, windSpeed, pressure, uvi, unit }) => {
-    // console.log(props.current)
-    // console.log(new Date(sunrise * 1000))
     return (
         <div className='cw-container rounded-2' >
             <div>

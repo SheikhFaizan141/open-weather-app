@@ -26,34 +26,36 @@ function TempScale({ unit, onClick }) {
 
 function SearchBar({ onSubmit, onChange, onClick, value }) {
   return (
-    <div className='sb-search'>
-      <i className="sb-icon fa fa-search"></i>
-      <form
-        className='sb-form'
-        onSubmit={onSubmit}
-      >
-        <input
-          className='sb-input'
-          type="search"
-          placeholder="Search City"
-          autoComplete="off"
-          city="search"
-          value={value}
-          onChange={onChange}
-        />
-      </form>
-      <button
-        className='sb-btn'
-        onClick={onClick}
-      >
-        <i className="sb-icon fa-solid fa-location-dot"></i>
-      </button>
+    <div>
+      <div className='sb-search'>
+        <i className="sb-icon fa fa-search"></i>
+          <form
+            className='sb-form'
+            onSubmit={onSubmit}
+          >
+            <input
+              className='sb-input'
+              type="search"
+              placeholder="Search City"
+              autoComplete="off"
+              city="search"
+              value={value}
+              onChange={onChange}
+            />
+          </form>
+        <button
+          className='sb-btn'
+          onClick={onClick}
+        >
+          <i className="sb-icon fa-solid fa-location-dot"></i>
+        </button>
+      </div>
     </div>
   )
 }
 
 
-const Header = ({ onClick, unit, city, dateTime, locationClick, value, onChange, onSubmit }) => {
+const Header = ({ loaded, onClick, unit, city, dateTime, locationClick, value, onChange, onSubmit }) => {
 
   function format(arg) {
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -67,28 +69,48 @@ const Header = ({ onClick, unit, city, dateTime, locationClick, value, onChange,
     return day + ", " + time;
   }
 
-
+  const classes = loaded ? ['header flex', 'search'] : ['header', 'search flex-sb']
   return (
-    <div id='header'>
-      <div>
-        <h1 className='city'>{city}</h1>
-        <span className='time'>{format(dateTime)}</span>
-      </div>
 
-      <div className="search mr-1">
-        <SearchBar
-          onSubmit={onSubmit}
-          onChange={onChange}
-          onClick={locationClick}
-          value={value}
-        />
+    <div className={classes[0]}>
+      {
+        loaded
+          ?
+          <>
+            <div className='mb-2'>
+              <h1 className='city'>{city}</h1>
+              <span className='time'>{format(dateTime)}</span>
+            </div>
 
-        <TempScale
-          unit={unit}
-          onClick={onClick}
-        />
-      </div>
+            <div className={classes[1]}>
+              <SearchBar
+                onSubmit={onSubmit}
+                onChange={onChange}
+                onClick={locationClick}
+                value={value}
+              />
 
+              <TempScale
+                unit={unit}
+                onClick={onClick}
+              />
+            </div>
+          </>
+          :
+          <div className={classes[1]}>
+            <SearchBar
+              onSubmit={onSubmit}
+              onChange={onChange}
+              onClick={locationClick}
+              value={value}
+            />
+
+            <TempScale
+              unit={unit}
+              onClick={onClick}
+            />
+          </div>
+      }
     </div>
   )
 }
