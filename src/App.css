@@ -62,15 +62,19 @@ body {
     margin: auto 0;
 }
 
+
+/* Search Bar */
+
 .sb-search  {
     display: flex;
     align-items: center;
     background-color: rgb(255, 255, 255);
-    /* box-shadow: 0 0 10px black; */
     border-radius: 28px;
-    /* padding: 0.5rem 1rem; */
+    padding: 0.5rem 1rem;
     margin: 0;
     z-index: 10;
+    /* border: #444444 1px solid; */
+    height: 45px;
 }
 
 /* .sb-location {
@@ -82,13 +86,13 @@ body {
 }
 
 .sb-form {
-    padding: 0;
+    /* padding: 0 .5rem; */
+    height: 100%;
 }
 
 .sb-search input {
-    display: inline-block;
     font-size: 1.05rem;
-    font-weight: 400;
+    font-weight: 500;
     background-color: rgb(255, 255, 255);
     height: 100%;
     width: 100%;
@@ -112,15 +116,25 @@ body {
 
 .sb-btn {
     background-color: inherit;
+    /* border-radius: inherit; */
     padding: 0;
     margin: 0;
-    border-radius: inherit;
+
 }
 
-.sb-icon {
-    font-size: 1rem;
-    color: #4f4f4f;
-    padding: 1rem;
+/* .sb-icon{
+    padding: 0 .5rem 0 1.5rem;
+} */
+
+.sb-icon.fa-search{
+    color: #9e9e9e;
+    padding: 0 0.75rem 0 .5rem;
+   
+}
+
+.sb-icon.fa-location-dot{
+    padding: 0 .5rem 0 1.5rem;
+    color: rgb(0, 119, 199);
 }
 
 /* ###################### */
@@ -160,6 +174,7 @@ body {
 .divider {
     border-left: solid 1px #000;
     margin: 0 4px;
+    height: 10px;
 }
 
 /* Current Weather */

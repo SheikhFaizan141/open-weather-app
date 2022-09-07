@@ -24,7 +24,7 @@ function TempScale({ unit, onClick }) {
 }
 
 
-function SearchBar({ onSubmit, onChange, locationClick, value }) {
+function SearchBar({ onSubmit, onChange, onClick, value }) {
   return (
     <div className='sb-search'>
       <i className="sb-icon fa fa-search"></i>
@@ -37,14 +37,14 @@ function SearchBar({ onSubmit, onChange, locationClick, value }) {
           type="search"
           placeholder="Search City"
           autoComplete="off"
-          name="search"
+          city="search"
           value={value}
           onChange={onChange}
         />
       </form>
       <button
         className='sb-btn'
-        onClick={locationClick}
+        onClick={onClick}
       >
         <i className="sb-icon fa-solid fa-location-dot"></i>
       </button>
@@ -53,7 +53,7 @@ function SearchBar({ onSubmit, onChange, locationClick, value }) {
 }
 
 
-const Header = ({ onClick, unit, name, dateTime, locationClick, value, onChange, onSubmit }) => {
+const Header = ({ onClick, unit, city, dateTime, locationClick, value, onChange, onSubmit }) => {
 
   function format(arg) {
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -71,7 +71,7 @@ const Header = ({ onClick, unit, name, dateTime, locationClick, value, onChange,
   return (
     <div id='header'>
       <div>
-        <h1 className='city'>{name}</h1>
+        <h1 className='city'>{city}</h1>
         <span className='time'>{format(dateTime)}</span>
       </div>
 
@@ -84,11 +84,11 @@ const Header = ({ onClick, unit, name, dateTime, locationClick, value, onChange,
         />
 
         <TempScale
-        unit={unit} 
-        onClick={onClick}
+          unit={unit}
+          onClick={onClick}
         />
-
       </div>
+
     </div>
   )
 }

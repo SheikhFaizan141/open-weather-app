@@ -9,6 +9,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      city: '',
       place: '',
       lat: '',
       lon: '',
@@ -77,10 +78,16 @@ class App extends React.Component {
   handleCoordinates() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.setState({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude
-        })
+        fetch(`http://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+          .then(res => res.json())
+          .then(geo => {
+            console.log(geo)
+            this.setState({
+              city: geo[0]['name'],
+              lat: position.coords.latitude,
+              lon: position.coords.longitude
+            })
+          })
       })
     } else {
       console.log('Error ')
@@ -120,12 +127,15 @@ class App extends React.Component {
     fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${this.state.place}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
       .then(res => res.json())
       .then(data => {
-        console.log(data)
-        this.setState({
-          geoLoc: data,
-          lat: data[0]['lat'],
-          lon: data[0]['lon']
-        })
+        try {
+          this.setState({
+            city: data[0]['name'],
+            lat: data[0]['lat'],
+            lon: data[0]['lon']
+          })
+        } catch (error) {
+          console.dir(error)
+        }
       })
   }
 
@@ -151,7 +161,7 @@ class App extends React.Component {
         <div className='app-container'>
 
           <Header
-            name={this.state.geoLoc[0]['name']}
+            city={this.state.city}
             dateTime={this.state.currentWeather['dt']}
             unit={this.state.unit}
             onClick={this.handleFormat}
