@@ -79,8 +79,8 @@ const WeatherCard = ({ temp, realFeel, icon, desc, sunrise, sunset, humidity, wi
 
                 {/* This can be improved in style */}
                 <div className="cw-add-container">
-                    <div className='cw-add-box'>
-                        <div className='pe-1'>
+                    <div className='cw-add-box  mb-3'>
+                        <div className='pe-2'>
                             <span className='cw-add-box-heading'>Humadity </span>
                             <span className='cw-add-box-value'>{humidity}%</span>
                         </div>
@@ -90,7 +90,7 @@ const WeatherCard = ({ temp, realFeel, icon, desc, sunrise, sunset, humidity, wi
                         </div>
                     </div>
                     <div className='cw-add-box'>
-                        <div className='pe-1'>
+                        <div className='pe-2'>
                             <span className='cw-add-box-heading'>Pressure </span>
                             <span className='cw-add-box-value'>{pressure}hPa</span>
                         </div>
