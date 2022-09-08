@@ -7,7 +7,7 @@ const arr = ['pm2_5', 'pm10', 'so2', 'no2', 'o3', 'co'];
 const range = {
     1: ['Good', 'green'],
     2: ['Fair', 'green'],
-    3: ['Moderate', 'lightgreen'],
+    3: ['Moderate', '#2cbf2c'],
     4: ['Poor', 'orangered'],
     5: ['Very Poor', '#ff2f2f']
 }

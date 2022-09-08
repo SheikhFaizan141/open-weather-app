@@ -11,8 +11,9 @@ const Weather = ({ imgId, desc, unit, temp, realFeel }) => {
 
 
             <div className='cw-info'>
-                <div>
+                <div className='img-div'>
                     <img
+                        className='img'
                         src={`http://openweathermap.org/img/wn/${imgId}@2x.png`} width="100px" height="100px" alt="icon"
                     >
                     </img>
@@ -22,12 +23,15 @@ const Weather = ({ imgId, desc, unit, temp, realFeel }) => {
                     <p className='cw-desc'>
                         {desc}
                     </p>
-                    <div className='cw-temp'>
+                    <div className='cw-temp' >
                         <span>
                             {formatTime.formatKalvin(unit, temp)}
-                        </span>
-                        <span className='cw-feels-like'>
-                            {formatTime.formatKalvin(unit, realFeel)}
+                            <sup
+                                title='Real Feel'
+                                className='cw-feels-like'
+                            >
+                                {formatTime.formatKalvin(unit, realFeel)}
+                            </sup>
                         </span>
                     </div>
                 </div>

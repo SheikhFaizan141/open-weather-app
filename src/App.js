@@ -107,7 +107,7 @@ class App extends React.Component {
           .then(geo => {
             this.setState({
               city: geo[0]['name'],
-              country: geo[0]['city'],
+              country: geo[0]['country'],
               lat: position.coords.latitude,
               lon: position.coords.longitude
             })
