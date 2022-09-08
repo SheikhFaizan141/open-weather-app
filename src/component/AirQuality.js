@@ -5,7 +5,7 @@ import formatTime from '../global/formatTime'
 const arr = ['pm2_5', 'pm10', 'so2', 'no2', 'o3', 'co'];
 
 const range = {
-    1: ['Good', 'greem'],
+    1: ['Good', 'green'],
     2: ['Fair', 'green'],
     3: ['Moderate', 'lightgreen'],
     4: ['Poor', 'orangered'],
@@ -83,7 +83,7 @@ function AirQuality({ lat, lon }) {
                     </span>
                 </div>
                 <div className='mb-2'>
-                    <p>Air quality is good. A perfect day for a walk!</p>
+                    <span>Air quality is good. A perfect day for a walk!</span>
                 </div>
 
                 <div className='aq-comp-container'>

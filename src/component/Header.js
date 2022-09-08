@@ -55,7 +55,7 @@ function SearchBar({ onSubmit, onChange, onClick, value }) {
 }
 
 
-const Header = ({ loaded, onClick, unit, city, dateTime, locationClick, value, onChange, onSubmit }) => {
+const Header = ({ loaded, onClick, unit, city, country, dateTime, locationClick, value, onChange, onSubmit }) => {
 
   function format(arg) {
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -78,7 +78,7 @@ const Header = ({ loaded, onClick, unit, city, dateTime, locationClick, value, o
           ?
           <>
             <div className='mb-2'>
-              <h1 className='city'>{city}</h1>
+              <h1 className='city'>{city}, {country}</h1>
               <span className='time'>{format(dateTime)}</span>
             </div>
 

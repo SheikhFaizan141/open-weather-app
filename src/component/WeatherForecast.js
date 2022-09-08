@@ -1,10 +1,10 @@
 import React from 'react'
 import formatTime from '../global/formatTime';
 
+
+const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 const WeatherForecast = (props) => {
-    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-
     return (
         <div className='wf-container rounded-2'>
             {
