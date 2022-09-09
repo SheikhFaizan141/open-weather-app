@@ -15,7 +15,7 @@ if (window.localStorage.getItem('coords')) {
 }
 
 const fetchCoordinates = async (latitude, longitude) => {
-  const res = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+  const res = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
 
   return res.json()
 }
@@ -154,7 +154,7 @@ class App extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${this.state.place}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
+    fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${this.state.place}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
       .then(res => res.json())
       .then(data => {
         if (data.length > 0) {
