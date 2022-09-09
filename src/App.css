@@ -77,7 +77,7 @@ body {
     border-radius: 28px;
     padding: 0.5rem 1rem;
     margin: 0;
-    /* z-index: 10; */
+    z-index: 10;
     height: 45px;
 }
 

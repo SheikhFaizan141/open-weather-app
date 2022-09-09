@@ -72,7 +72,7 @@ const Header = ({ loaded, onClick, unit, city, country, dateTime, locationClick,
   const classes = loaded ? ['header flex', 'search'] : ['header', 'search flex-sb']
   return (
 
-    <div className={classes[0]}>
+    <div className={'rounded ' +  classes[0]}>
       {
         loaded
           ?
