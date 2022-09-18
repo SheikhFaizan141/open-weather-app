@@ -80,6 +80,7 @@ class App extends React.Component {
     fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
       .then(res => res.json())
       .then(oneCall => {
+        console.log(oneCall['timezone_offset'])
         this.setState({
           oneCall: oneCall,
           currentWeather: oneCall['current'],
@@ -208,6 +209,7 @@ class App extends React.Component {
                 realFeel={this.state.realFeel}
                 icon={this.state.icon}
                 desc={this.state.desc}
+                offSet={this.state.oneCall['timezone_offset']}
                 sunrise={this.state.sunrise}
                 sunset={this.state.sunset}
                 humidity={this.state.humidity}

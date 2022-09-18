@@ -1,6 +1,28 @@
 import React from 'react'
 import formatTime from '../global/formatTime';
 
+function AboutPlace({city, country, dateTime }) {
+  function format(arg) {
+    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    let dt = new Date(arg * 1000);
+    let day = weekday[dt.getDay()];
+
+    // static method
+    const time = formatTime.formatAMPM(dt);
+
+    return day + ", " + time;
+  }
+  
+  return (
+    <div className='mb-2'>
+      <h1 className='city'>{city}, {country}</h1>
+      <span className='time'>{format(dateTime)}</span>
+    </div>
+  )
+}
+
+
 function TempScale({ unit, onClick }) {
   return (
     <div className='temp-unit '>
@@ -29,20 +51,20 @@ function SearchBar({ onSubmit, onChange, onClick, value }) {
     <div>
       <div className='sb-search'>
         <i className="sb-icon fa fa-search"></i>
-          <form
-            className='sb-form'
-            onSubmit={onSubmit}
-          >
-            <input
-              className='sb-input'
-              type="search"
-              placeholder="Search City"
-              autoComplete="off"
-              city="search"
-              value={value}
-              onChange={onChange}
-            />
-          </form>
+        <form
+          className='sb-form'
+          onSubmit={onSubmit}
+        >
+          <input
+            className='sb-input'
+            type="search"
+            placeholder="Search City"
+            autoComplete="off"
+            city="search"
+            value={value}
+            onChange={onChange}
+          />
+        </form>
         <button
           className='sb-btn'
           onClick={onClick}
@@ -57,60 +79,31 @@ function SearchBar({ onSubmit, onChange, onClick, value }) {
 
 const Header = ({ loaded, onClick, unit, city, country, dateTime, locationClick, value, onChange, onSubmit }) => {
 
-  function format(arg) {
-    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-    let dt = new Date(arg * 1000);
-    let day = weekday[dt.getDay()];
-
-    // static method
-    const time = formatTime.formatAMPM(dt);
-
-    return day + ", " + time;
-  }
-
   const classes = loaded ? ['header flex', 'search'] : ['header', 'search flex-sb']
   return (
 
-    <div className={'rounded ' +  classes[0]}>
+    <div className={'rounded ' + classes[0]}>
       {
-        loaded
-          ?
-          <>
-            <div className='mb-2'>
-              <h1 className='city'>{city}, {country}</h1>
-              <span className='time'>{format(dateTime)}</span>
-            </div>
-
-            <div className={classes[1]}>
-              <SearchBar
-                onSubmit={onSubmit}
-                onChange={onChange}
-                onClick={locationClick}
-                value={value}
-              />
-
-              <TempScale
-                unit={unit}
-                onClick={onClick}
-              />
-            </div>
-          </>
-          :
-          <div className={classes[1]}>
-            <SearchBar
-              onSubmit={onSubmit}
-              onChange={onChange}
-              onClick={locationClick}
-              value={value}
-            />
-
-            <TempScale
-              unit={unit}
-              onClick={onClick}
-            />
-          </div>
+        loaded && 
+        <AboutPlace
+         city={city} 
+         country={country} 
+         dateTime={dateTime}
+        />
       }
+      <div className={classes[1]}>
+        <SearchBar
+          onSubmit={onSubmit}
+          onChange={onChange}
+          onClick={locationClick}
+          value={value}
+        />
+
+        <TempScale
+          unit={unit}
+          onClick={onClick}
+        />
+      </div>
     </div>
   )
 }

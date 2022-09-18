@@ -21,7 +21,7 @@ const WeatherForecast = (props) => {
                         >
                             <h5>{weekday[day]}</h5>
                             <div>
-                                <img src={`http://openweathermap.org/img/wn/${forecast['weather'][0]['icon']}@2x.png`} width="50px" height="50px" alt=""></img>
+                                <img src={`https://openweathermap.org/img/wn/${forecast['weather'][0]['icon']}@2x.png`} width="50px" height="50px" alt=""></img>
                             </div>
                             <div className="wf-temp-box">
                                 <span className="wf-max-temp">{formatTime.formatKalvin(props.unit, forecast['temp'][['max']])}</span>

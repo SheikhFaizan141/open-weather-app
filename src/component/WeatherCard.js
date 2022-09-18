@@ -14,7 +14,7 @@ const Weather = ({ imgId, desc, unit, temp, realFeel }) => {
                 <div className='img-div'>
                     <img
                         className='img'
-                        src={`http://openweathermap.org/img/wn/${imgId}@2x.png`} width="100px" height="100px" alt="icon"
+                        src={`https://openweathermap.org/img/wn/${imgId}@2x.png`} width="100px" height="100px" alt="icon"
                     >
                     </img>
                 </div>
@@ -40,18 +40,34 @@ const Weather = ({ imgId, desc, unit, temp, realFeel }) => {
     )
 }
 
-const SunsetSunrise = ({ heading, time }) => {
+const SunsetSunrise = ({ heading, time, offSet }) => {
+
+    const formatTime = (date) => {
+        let hours = date.getUTCHours();
+        let minutes = date.getUTCMinutes();
+        let ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        let strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    }
+
+
+
+    const fTime = formatTime(new Date((time + offSet) * 1000))
     return (
         <div>
             <h5>{heading}</h5>
             <span className='sun-text sun-rise'>
-                {formatTime.formatAMPM(new Date(time * 1000))}
+                {/* {formatTime.formatAMPM(new Date(time * 1000))} */}
+                {fTime}
             </span>
         </div>
     )
 }
 
-const WeatherCard = ({ temp, realFeel, icon, desc, sunrise, sunset, humidity, windSpeed, pressure, uvi, unit }) => {
+const WeatherCard = ({ temp, realFeel, icon, desc, sunrise, sunset, humidity, windSpeed, pressure, uvi, unit, offSet }) => {
     return (
         <div className='cw-container rounded-2' >
 
@@ -69,11 +85,13 @@ const WeatherCard = ({ temp, realFeel, icon, desc, sunrise, sunset, humidity, wi
                     <SunsetSunrise
                         heading='Sunrise'
                         time={sunrise}
+                        offSet={offSet}
                     />
 
                     <SunsetSunrise
                         heading='Sunset'
                         time={sunset}
+                        offSet={offSet}
                     />
                 </div>
 
